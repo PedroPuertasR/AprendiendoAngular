@@ -24,4 +24,9 @@ public class Cliente{
     @Temporal(TemporalType.DATE)
     private LocalDate createAt;
 
+    @PrePersist
+    public void prePersist(){
+        createAt = LocalDate.now();
+    }
+
 }
