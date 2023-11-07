@@ -36,17 +36,18 @@ export class FormComponent {
   create(): void {
     this.clienteService.create(this.cliente).subscribe(
       cliente => {
-        Swal.fire('Nuevo cliente', `Cliente ${cliente.nombre} creado con éxito`, 'success'),
+        Swal.fire('Nuevo cliente', `El cliente <b>${cliente.nombre}</b> ha sido creado con éxito.`, 'success'),
           this.router.navigate(['/clientes'])
       }
     )
   }
 
+  //En este método utilizamos json y accedemos al cliente para indicar la respuesta en el popup
   update(): void{
     this.clienteService.update(this.cliente).subscribe(
-      cliente => {
+      json => {
         this.router.navigate(['/clientes']),
-        Swal.fire('Cliente actualizado', `Cliente ${cliente.nombre} actualizado con éxito`, 'success')
+        Swal.fire('Cliente actualizado', `${json.mensaje} ${json.cliente.nombre}`, 'success')
       }
     )
   }
