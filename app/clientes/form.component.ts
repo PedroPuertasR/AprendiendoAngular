@@ -13,6 +13,8 @@ export class FormComponent {
   public cliente: Cliente = new Cliente();
   public titulo: string = "Crear cliente";
 
+  public errores: string[];
+
   constructor(private clienteService: ClienteService, private router: Router, private activate: ActivatedRoute) { }
 
   ngOnInit(){
@@ -38,6 +40,11 @@ export class FormComponent {
       cliente => {
         Swal.fire('Nuevo cliente', `El cliente <b>${cliente.nombre}</b> ha sido creado con éxito.`, 'success'),
           this.router.navigate(['/clientes'])
+      },
+      err => {
+        this.errores = err.error.errors as string[];
+        console.error('Código del error desde el back: ' + err.status);
+        console.error(err.error.errors);
       }
     )
   }
@@ -48,6 +55,11 @@ export class FormComponent {
       json => {
         this.router.navigate(['/clientes']),
         Swal.fire('Cliente actualizado', `${json.mensaje} ${json.cliente.nombre}`, 'success')
+      },
+      err => {
+        this.errores = err.error.errors as string[];
+        console.error('Código del error desde el back: ' + err.status);
+        console.error(err.error.errors);
       }
     )
   }
