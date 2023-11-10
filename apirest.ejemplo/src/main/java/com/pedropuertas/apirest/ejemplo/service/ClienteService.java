@@ -3,6 +3,8 @@ package com.pedropuertas.apirest.ejemplo.service;
 import com.pedropuertas.apirest.ejemplo.model.Cliente;
 import com.pedropuertas.apirest.ejemplo.repository.ClienteRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,6 +17,10 @@ public class ClienteService {
 
     public List <Cliente> findAll(){
         return repository.findAll();
+    }
+
+    public Page<Cliente> findAll(Pageable pageable){
+        return repository.findAll(pageable);
     }
 
     public Cliente save(Cliente cliente){
