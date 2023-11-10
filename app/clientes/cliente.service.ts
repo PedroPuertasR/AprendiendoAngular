@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 //import { CLIENTES } from './clientes.json';
 import { Cliente } from './cliente';
-import { of, Observable, throwError} from 'rxjs';
+import { of, Observable, throwError, tap} from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map , catchError} from 'rxjs/operators';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
+//import { formatDate } from '@angular/common';
 
 
 @Injectable({
@@ -18,9 +19,29 @@ export class ClienteService {
 
   constructor(private http: HttpClient, private router: Router) { }
 
-  getClientes() : Observable<Cliente[]>{
+  getClientes(page: number) : Observable<any>{
     //return of(CLIENTES);
-    return this.http.get<Cliente[]>(this.urlEndPoint);
+    return this.http.get(this.urlEndPoint + '/page/' + page).pipe(
+      map((response: any) => {
+        (response.content as Cliente[]).map(cliente => {
+          cliente.nombre = cliente.nombre.toUpperCase();
+          //También se puede utilizar la clase DatePipe de @angular/common de la siguiente forma:
+          //let datePipe = new DatePipe('en-US');
+          //cliente.createAt = datePipe.transform(cliente.createAt, 'dd/MM/yyyy');
+          //Para poder utilizar 'es' hace falta importar el sistema local en la clase, o en este caso en el app.module
+          //cliente.createAt = formatDate(cliente.createAt, 'EEEE dd/MMM/yyyy', 'es'); 
+          //Aunque en este ejemplo lo realizaremos directamente en el HTML de clientes, importando en app.module el LOCALE_ID y añadiendolo a providers
+          return cliente;
+        });
+        return response;
+      }),
+      tap((response: any) => {
+        let clientes = response.content as Cliente[];
+        clientes.forEach(cliente => {
+          console.log(cliente.nombre);
+        })
+      })
+    );
   }
 
   //En este método se ha manejado el map del backend como un tipo cliente, gracias al operador map que hay dentro del return

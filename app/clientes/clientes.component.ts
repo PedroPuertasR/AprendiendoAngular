@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Cliente } from './cliente';
 import { ClienteService } from './cliente.service';
 import Swal from 'sweetalert2';
+import { tap } from 'rxjs';
 
 @Component({
   selector: 'app-clientes',
@@ -14,10 +15,21 @@ export class ClientesComponent {
   constructor(private clienteService: ClienteService) { }
 
   ngOnInit() {
-    this.clienteService.getClientes().subscribe(
+    /*this.clienteService.getClientes().subscribe(
       //clientes es el resultado de getClientes() y this.clientes es el atributo creado arriba
       clientes => this.clientes = clientes
-    );
+    );*/
+
+    let page = 0;
+
+    this.clienteService.getClientes(page).pipe(
+      tap(response => {
+        console.log('Tap de clientes desde el component:');
+        (response.content as Cliente[]).forEach(cliente => {
+          console.log(cliente.nombre);
+        })
+      })
+    ).subscribe(response => this.clientes = response.content as Cliente[]);
   }
 
   delete(cliente: Cliente): void {
