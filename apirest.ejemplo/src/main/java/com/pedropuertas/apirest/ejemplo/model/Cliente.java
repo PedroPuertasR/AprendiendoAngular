@@ -3,6 +3,7 @@ package com.pedropuertas.apirest.ejemplo.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
@@ -33,13 +34,15 @@ public class Cliente{
     @Column(nullable = false, unique = true)
     private String email;
 
+    @NotNull(message = "no puede estar vacío.")
     @Column(name = "create_at")
     @Temporal(TemporalType.DATE)
     private LocalDate createAt;
 
+    /*No es necesario porque se utiliza un DatePicker en el front
     @PrePersist
     public void prePersist(){
         createAt = LocalDate.now();
-    }
+    }*/
 
 }

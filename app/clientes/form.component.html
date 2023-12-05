@@ -11,7 +11,8 @@
             <div class="form-group row mb-3">
                 <label for="nombre" class="col-form-label col-sm-2">Nombre</label>
                 <div class="col-sm-6">
-                    <input type="text" class="form-control" [(ngModel)]="cliente.nombre" name="nombre"  #nombre="ngModel"><!-- required minlength="4" --> 
+                    <input type="text" class="form-control" [(ngModel)]="cliente.nombre" name="nombre"
+                        #nombre="ngModel"><!-- required minlength="4" -->
                     <div class="text-danger" *ngIf="nombre.invalid && (nombre.dirty || nombre.touched)">
                         <p *ngIf="nombre.errors.required">
                             Debe introducir un nombre.
@@ -25,7 +26,8 @@
             <div class="form-group row mb-3">
                 <label for="apellidos" class="col-form-label col-sm-2">Apellidos</label>
                 <div class="col-sm-6">
-                    <input type="text" class="form-control" [(ngModel)]="cliente.apellidos" name="apellidos" #apellido="ngModel"> <!-- required minlength="4" --> 
+                    <input type="text" class="form-control" [(ngModel)]="cliente.apellidos" name="apellidos"
+                        #apellido="ngModel"> <!-- required minlength="4" -->
                     <div class="text-danger" *ngIf="apellido.invalid && (apellido.dirty || apellido.touched)">
                         <p *ngIf="apellido.errors.required">
                             Debe introducir un apellido.
@@ -39,7 +41,8 @@
             <div class="form-group row mb-3">
                 <label for="email" class="col-form-label col-sm-2">Email</label>
                 <div class="col-sm-6">
-                    <input type="email" class="form-control" [(ngModel)]="cliente.email" name="email" #email="ngModel"> <!-- required email --> 
+                    <input type="email" class="form-control" [(ngModel)]="cliente.email" name="email" #email="ngModel">
+                    <!-- required email -->
                     <div class="text-danger" *ngIf="email.invalid && (email.dirty || email.touched)">
                         <p *ngIf="email.errors.required">
                             Debe introducir un email.
@@ -51,14 +54,30 @@
                 </div>
             </div>
 
+            <div class="form-group row mb-3">
+                <label for="createAt" class="col-form-label col-sm-2">Fecha</label>
+                <div class="col-sm-6">
+                    <input matInput [matDatepicker]="miDatePicker" class="form-control" [(ngModel)]="cliente.createAt" name="createAt" #createAt="ngModel" style="display:inline; width: 30em;">
+                    <mat-datepicker-toggle matIconSuffix [for]="miDatePicker"></mat-datepicker-toggle>
+                    <mat-datepicker #miDatePicker></mat-datepicker>
+                    <div class="text-danger" *ngIf="createAt.invalid && (createAt.dirty || createAt.touched)">
+                        <p *ngIf="createAt.errors.required">
+                            Debe introducir una fecha.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
             <div class="form-group row">
                 <div class="col-sm-6">
-                    <button class="btn btn-primary" role="button" (click) = 'create()' *ngIf="!cliente.id else elseBlock" [disabled]="!clienteForm.form.valid">Crear</button>
+                    <button class="btn btn-primary" role="button" (click)='create()' *ngIf="!cliente.id else elseBlock"
+                        [disabled]="!clienteForm.form.valid">Crear</button>
 
                     <ng-template #elseBlock>
-                        <button class="btn btn-primary" role="button" (click) = 'update()' [disabled]="!clienteForm.form.valid">Actualizar</button>
+                        <button class="btn btn-primary" role="button" (click)='update()'
+                            [disabled]="!clienteForm.form.valid">Actualizar</button>
                     </ng-template>
-                    
+
                 </div>
             </div>
         </form>

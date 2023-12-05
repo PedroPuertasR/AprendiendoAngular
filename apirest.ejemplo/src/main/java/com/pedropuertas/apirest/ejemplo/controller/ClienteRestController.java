@@ -114,6 +114,7 @@ public class ClienteRestController {
             aux.setApellidos(cliente.getApellidos());
             aux.setNombre(cliente.getNombre());
             aux.setEmail(cliente.getEmail());
+            aux.setCreateAt(cliente.getCreateAt());
 
             update = clienteService.save(aux);
         }catch (DataAccessException e){

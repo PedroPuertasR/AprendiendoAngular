@@ -13,9 +13,15 @@ import { PaginatorComponent } from './paginator/paginator.component';
 import { FormsModule } from '@angular/forms';
 import { registerLocaleData } from '@angular/common';
 import localeES from '@angular/common/locales/es';
+import localeEsExtra from '@angular/common/locales/extra/es';
 import { LOCALE_ID } from '@angular/core';
-
-registerLocaleData(localeES, 'es');
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatMomentDateModule, MAT_MOMENT_DATE_FORMATS} from '@angular/material-moment-adapter';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MAT_DATE_LOCALE, MAT_DATE_FORMATS, DateAdapter} from '@angular/material/core';
+import { MomentUtcDateAdapter } from './Moment-Utc-Date-Adapter';
+registerLocaleData(localeES, 'es', localeEsExtra);
 
 const routes: Routes = [
   {path: '', redirectTo: '/clientes', pathMatch: 'full'},
@@ -40,9 +46,18 @@ const routes: Routes = [
     BrowserModule,
     HttpClientModule,
     FormsModule,
-    RouterModule.forRoot(routes)
+    RouterModule.forRoot(routes),
+    BrowserAnimationsModule,
+    MatDatepickerModule,
+    MatMomentDateModule,
+    MatFormFieldModule
   ],
-  providers: [{provide: LOCALE_ID, useValue: 'es'}],
+  providers: [
+    {provide: LOCALE_ID, useValue: 'es'},
+    { provide: MAT_DATE_LOCALE, useValue: 'es'},
+    { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},
+    { provide: DateAdapter, useClass: MomentUtcDateAdapter} 
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
