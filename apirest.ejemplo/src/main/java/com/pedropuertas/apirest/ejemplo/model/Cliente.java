@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 
@@ -38,6 +39,9 @@ public class Cliente{
     @Column(name = "create_at")
     @Temporal(TemporalType.DATE)
     private LocalDate createAt;
+
+
+    private String foto;
 
     /*No es necesario porque se utiliza un DatePicker en el front
     @PrePersist
