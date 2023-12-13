@@ -21,6 +21,7 @@ import { MatMomentDateModule, MAT_MOMENT_DATE_FORMATS} from '@angular/material-m
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MAT_DATE_LOCALE, MAT_DATE_FORMATS, DateAdapter} from '@angular/material/core';
 import { MomentUtcDateAdapter } from './Moment-Utc-Date-Adapter';
+import { PerfilComponent } from './clientes/perfil/perfil.component';
 registerLocaleData(localeES, 'es', localeEsExtra);
 
 const routes: Routes = [
@@ -29,7 +30,8 @@ const routes: Routes = [
   {path: 'clientes', component: ClientesComponent},
   {path: 'clientes/page/:page', component: ClientesComponent},
   {path: 'clientes/form', component: FormComponent},
-  {path: 'clientes/form/:id', component: FormComponent}
+  {path: 'clientes/form/:id', component: FormComponent},
+  {path: 'clientes/ver/:id', component: PerfilComponent}
 ];
 
 @NgModule({
@@ -40,7 +42,8 @@ const routes: Routes = [
     DirectivaComponent,
     ClientesComponent,
     FormComponent,
-    PaginatorComponent
+    PaginatorComponent,
+    PerfilComponent
   ],
   imports: [
     BrowserModule,
