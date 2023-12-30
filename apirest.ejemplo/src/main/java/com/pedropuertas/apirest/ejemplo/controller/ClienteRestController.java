@@ -235,7 +235,15 @@ public class ClienteRestController {
         }
 
         if(!recurso.exists() && !recurso.isReadable()){
-            throw new RuntimeException("Error. No se pudo cargar la imagen " + nombreFoto);
+            ruta = Paths.get("src/main/resources/static/images").resolve("avatar.png").toAbsolutePath();
+
+            try {
+                recurso = new UrlResource(ruta.toUri());
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+
+            log.error("Error. No se pudo cargar la imagen " + nombreFoto);
         }
 
         HttpHeaders cabecera = new HttpHeaders();
