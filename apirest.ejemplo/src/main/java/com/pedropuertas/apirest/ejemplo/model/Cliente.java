@@ -1,12 +1,12 @@
 package com.pedropuertas.apirest.ejemplo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 
@@ -42,6 +42,13 @@ public class Cliente{
 
 
     private String foto;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "region_id")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    private Region region;
+
+    //Se utiliza el JsonIgnore para que se ignoren los atributos que crea el FetchType.LAZY, así solo tendremos los de la clase
 
     /*No es necesario porque se utiliza un DatePicker en el front
     @PrePersist
