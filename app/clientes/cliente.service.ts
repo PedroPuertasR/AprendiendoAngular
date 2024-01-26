@@ -6,6 +6,7 @@ import { HttpClient, HttpEvent, HttpHeaders, HttpRequest } from '@angular/common
 import { map , catchError} from 'rxjs/operators';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
+import { Region } from './region';
 //import { formatDate } from '@angular/common';
 
 
@@ -110,5 +111,9 @@ export class ClienteService {
     });
 
     return this.http.request(req);
+  }
+
+  getRegiones(): Observable <Region[]> {
+    return this.http.get<Region[]>(this.urlEndPoint + '/regiones');
   }
 }

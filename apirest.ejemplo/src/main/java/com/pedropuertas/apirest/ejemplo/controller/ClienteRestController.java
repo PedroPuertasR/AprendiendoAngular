@@ -1,6 +1,7 @@
 package com.pedropuertas.apirest.ejemplo.controller;
 
 import com.pedropuertas.apirest.ejemplo.model.Cliente;
+import com.pedropuertas.apirest.ejemplo.model.Region;
 import com.pedropuertas.apirest.ejemplo.service.ClienteService;
 import com.pedropuertas.apirest.ejemplo.service.IUploadFileService;
 import jakarta.validation.Valid;
@@ -120,6 +121,7 @@ public class ClienteRestController {
             aux.setNombre(cliente.getNombre());
             aux.setEmail(cliente.getEmail());
             aux.setCreateAt(cliente.getCreateAt());
+            aux.setRegion(cliente.getRegion());
 
             update = clienteService.save(aux);
         }catch (DataAccessException e){
@@ -211,6 +213,11 @@ public class ClienteRestController {
         cabecera.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + recurso.getFilename() + "\"");
 
         return new ResponseEntity<Resource>(recurso, cabecera, HttpStatus.OK);
+    }
+
+    @GetMapping("/clientes/regiones")
+    public List <Region> listarRegiones(){
+        return clienteService.findAllRegiones();
     }
 
 }

@@ -1,6 +1,7 @@
 package com.pedropuertas.apirest.ejemplo.service;
 
 import com.pedropuertas.apirest.ejemplo.model.Cliente;
+import com.pedropuertas.apirest.ejemplo.model.Region;
 import com.pedropuertas.apirest.ejemplo.repository.ClienteRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -33,6 +34,10 @@ public class ClienteService {
 
     public void delete(Long id){
         repository.deleteById(id);
+    }
+
+    public List<Region> findAllRegiones(){
+        return repository.findAllRegiones();
     }
 
 }

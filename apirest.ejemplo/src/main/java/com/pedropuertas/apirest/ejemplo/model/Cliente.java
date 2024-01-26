@@ -43,6 +43,7 @@ public class Cliente{
 
     private String foto;
 
+    @NotNull(message = "no puede estar vacío.")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "region_id")
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
