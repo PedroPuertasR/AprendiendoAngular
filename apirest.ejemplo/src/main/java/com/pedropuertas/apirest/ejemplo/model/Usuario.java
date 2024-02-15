@@ -1,9 +1,7 @@
 package com.pedropuertas.apirest.ejemplo.model;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -11,6 +9,11 @@ import java.util.List;
 
 @Entity
 @Table(name = "usuarios")
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@Builder
 public class Usuario implements Serializable {
 
     @Serial
