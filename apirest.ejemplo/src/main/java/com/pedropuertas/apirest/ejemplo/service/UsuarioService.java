@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,19 +29,21 @@ public class UsuarioService implements UserDetailsService {
     @Override
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Usuario usuario = repository.findByUsername(username);
+        Optional<Usuario> usuario = repository.findByUsername(username);
 
-        if(usuario == null){
+        if(usuario.isEmpty()){
             log.error("Error en el login: no existe el usuario '" + username + "' en el sistema");
             throw new UsernameNotFoundException("Error en el login: no existe el usuario'" + username + "'");
         }
 
-        List<GrantedAuthority> authorities = usuario.getRoles()
+        List<GrantedAuthority> authorities = usuario.get().getRoles()
                 .stream()
                 .map(role -> new SimpleGrantedAuthority(role.getNombre()))
                 .peek(authority -> log.info("Role: " + authority.getAuthority()))
                 .collect(Collectors.toList());
 
-        return new User(usuario.getUsername(), usuario.getPassword(), usuario.getEnabled(), true, true, true, authorities);
+        //return new User(usuario.getUsername(), usuario.getPassword(), usuario.getEnabled(), true, true, true, authorities);
+
+        return null;
     }
 }

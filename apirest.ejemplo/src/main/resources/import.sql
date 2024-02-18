@@ -13,3 +13,6 @@ INSERT INTO CLIENTE (nombre, apellidos, email, create_at, region_id) VALUES ('An
 INSERT INTO CLIENTE (nombre, apellidos, email, create_at, region_id) VALUES ('Luis', 'Torres López', 'luistorresl@gmail.com', '2023-05-12', 1);
 INSERT INTO CLIENTE (nombre, apellidos, email, create_at, region_id) VALUES ('Elena', 'García Rodríguez', 'elenagr@gmail.com', '2023-10-05', 1);
 INSERT INTO CLIENTE (nombre, apellidos, email, create_at, region_id) VALUES ('Sofía', 'Fernández Martínez', 'sofiafm@correo.com', '2023-07-19', 2);
+
+INSERT INTO ROLES (nombre) VALUES ('ADMIN');
+INSERT INTO ROLES (nombre) VALUES ('USER');
