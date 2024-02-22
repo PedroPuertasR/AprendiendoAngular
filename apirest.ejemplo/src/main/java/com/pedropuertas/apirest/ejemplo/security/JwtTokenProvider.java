@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import java.security.Key;
-import java.time.LocalDateTime;
 import java.util.Date;
 
 @Component
@@ -34,6 +33,7 @@ public class JwtTokenProvider {
                 .compact();
     }
 
+    //Método para generar una SecretKey
     private SecretKey generarSK(){
         return Keys.hmacShaKeyFor(Decoders.BASE64.decode(ConstSecurity.JWT_FIRMA));
     }

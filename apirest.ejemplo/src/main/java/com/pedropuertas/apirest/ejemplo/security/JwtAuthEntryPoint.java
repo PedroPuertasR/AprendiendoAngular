@@ -11,7 +11,7 @@ import java.io.IOException;
 
 //Clase para poder manejar las excepciones de tipo autenticación en la app
 @Component
-public class JwAuthEntryPoint implements AuthenticationEntryPoint {
+public class JwtAuthEntryPoint implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
         response.sendError(HttpServletResponse.SC_UNAUTHORIZED, authException.getMessage());
