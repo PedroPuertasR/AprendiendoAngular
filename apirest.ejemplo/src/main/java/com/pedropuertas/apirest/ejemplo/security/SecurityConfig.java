@@ -47,7 +47,10 @@ public class SecurityConfig {
     //Bean que establece una cadena de filtros de seguiradad en nuestra api. Aquí se determinan los permisos dependiendo de los roles
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
-        /*http
+
+        /* Forma antigüa de realizar el SecurityConfig
+
+        http
                 .csrf().disable() //Deshabilita un filtro que nos hará tener más errores
                 .exceptionHandling() //Permite el manejo de excepciones
                 .authenticationEntryPoint(entryPoint)
