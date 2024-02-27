@@ -1,7 +1,9 @@
 package com.pedropuertas.apirest.ejemplo.security;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwt;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
@@ -21,25 +23,24 @@ public class JwtTokenProvider {
         Date tiempoActual = new Date();
         Date expiracionToken = new Date(tiempoActual.getTime() + ConstSecurity.JWT_EXPIRATION_TOKEN);
 
-        byte[] keyBytes = Decoders.BASE64.decode(ConstSecurity.JWT_FIRMA);
-        Key key = Keys.hmacShaKeyFor(keyBytes);
-
         //Línea donde se genera el token
         return Jwts.builder()
                 .subject(username)
-                .issuedAt(tiempoActual)
+                .issuedAt(new Date())
                 .expiration(expiracionToken)
-                .signWith(key)
+                .signWith(generarSK(), Jwts.SIG.HS256)
                 .compact();
     }
 
     //Método para generar una SecretKey
     private SecretKey generarSK(){
-        return Keys.hmacShaKeyFor(Decoders.BASE64.decode(ConstSecurity.JWT_FIRMA));
+
+        return Keys.hmacShaKeyFor(ConstSecurity.JWT_FIRMA.getBytes());
     }
 
     //Método para extraer username a partir de un token
     public String obtenerUsername(String token){
+
         Claims claims = Jwts.parser()
                 .verifyWith(generarSK())
                 .build()

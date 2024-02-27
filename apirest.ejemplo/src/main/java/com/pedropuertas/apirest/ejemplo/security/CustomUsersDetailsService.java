@@ -20,8 +20,12 @@ import java.util.stream.Collectors;
 @Service
 public class CustomUsersDetailsService implements UserDetailsService {
 
-    @Autowired
     private UsuarioRepository repository;
+
+    @Autowired
+    public CustomUsersDetailsService(UsuarioRepository repository) {
+        this.repository = repository;
+    }
 
     private Logger log = LoggerFactory.getLogger(CustomUsersDetailsService.class);
 

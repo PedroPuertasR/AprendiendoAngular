@@ -27,9 +27,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     private String obtenerTokenSolicitud(HttpServletRequest request){
         String bearerToken = request.getHeader("Authorization");
 
-        if(StringUtils.hasText(bearerToken) && (bearerToken.startsWith("Bearer "))){
-            //En caso de fallo añadir bearerToken.length() detrás del 7
-            return bearerToken.substring(7);
+        if(StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")){
+            return bearerToken.substring(7, bearerToken.length());
         }
         return null;
     }
@@ -40,7 +39,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         String token = obtenerTokenSolicitud(request);
 
-        if((StringUtils.hasText(token)) && (tokenProvider.validarToken(token))){
+        if(StringUtils.hasText(token) && tokenProvider.validarToken(token)){
             String username = tokenProvider.obtenerUsername(token);
             UserDetails userDetails = customUsersDetailsService.loadUserByUsername(username);
 

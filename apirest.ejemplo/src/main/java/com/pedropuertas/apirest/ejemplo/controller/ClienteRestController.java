@@ -1,7 +1,15 @@
 package com.pedropuertas.apirest.ejemplo.controller;
 
+import com.pedropuertas.apirest.ejemplo.dtos.DtoAuthRespuesta;
+import com.pedropuertas.apirest.ejemplo.dtos.Login;
+import com.pedropuertas.apirest.ejemplo.dtos.Registro;
 import com.pedropuertas.apirest.ejemplo.model.Cliente;
 import com.pedropuertas.apirest.ejemplo.model.Region;
+import com.pedropuertas.apirest.ejemplo.model.Role;
+import com.pedropuertas.apirest.ejemplo.model.Usuario;
+import com.pedropuertas.apirest.ejemplo.repository.RoleRepository;
+import com.pedropuertas.apirest.ejemplo.repository.UsuarioRepository;
+import com.pedropuertas.apirest.ejemplo.security.JwtTokenProvider;
 import com.pedropuertas.apirest.ejemplo.service.ClienteService;
 import com.pedropuertas.apirest.ejemplo.service.IUploadFileService;
 import jakarta.validation.Valid;
@@ -13,6 +21,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,6 +39,21 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api")
 public class ClienteRestController {
+
+    private AuthenticationManager authenticationManager;
+    private PasswordEncoder passwordEncoder;
+    private RoleRepository roleRepo;
+    private UsuarioRepository usuarioRepository;
+    private JwtTokenProvider tokenProvider;
+
+    @Autowired
+    public ClienteRestController(AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder, RoleRepository roleRepo, UsuarioRepository usuarioRepository, JwtTokenProvider tokenProvider) {
+        this.authenticationManager = authenticationManager;
+        this.passwordEncoder = passwordEncoder;
+        this.roleRepo = roleRepo;
+        this.usuarioRepository = usuarioRepository;
+        this.tokenProvider = tokenProvider;
+    }
 
     @Autowired
     private ClienteService clienteService;
@@ -220,4 +248,60 @@ public class ClienteRestController {
         return clienteService.findAllRegiones();
     }
 
+
+    //Método para poder registrar usuarios con Rol USER
+    @PostMapping("/auth/registro")
+    public ResponseEntity<String> registrar(@RequestBody Registro dtoRegistro){
+        if(usuarioRepository.existsByUsername(dtoRegistro.getUsername())){
+            return new ResponseEntity<>("El usuario ya existe. Inténtalo con otro.", HttpStatus.BAD_REQUEST);
+        }
+
+        Usuario usuario = new Usuario();
+        usuario.setUsername(dtoRegistro.getUsername());
+        usuario.setPassword(passwordEncoder.encode(dtoRegistro.getPassword()));
+
+        Role roles = roleRepo.findByNombre("USER").get();
+
+        usuario.setRoles(Collections.singletonList(roles));
+
+        usuarioRepository.save(usuario);
+
+        return new ResponseEntity<String>("Registro existoso.", HttpStatus.OK);
+    }
+
+    //Método para poder registrar usuarios con Rol ADMIN
+    @PostMapping("/auth/registroAdmin")
+    public ResponseEntity<String> registrarAdmin(@RequestBody Registro dtoRegistro){
+        if(usuarioRepository.existsByUsername(dtoRegistro.getUsername())){
+            return new ResponseEntity<>("El admin ya existe. Inténtalo con otro.", HttpStatus.BAD_REQUEST);
+        }
+
+        Usuario usuario = new Usuario();
+        usuario.setUsername(dtoRegistro.getUsername());
+        usuario.setPassword(passwordEncoder.encode(dtoRegistro.getPassword()));
+
+        Role roles = roleRepo.findByNombre("ADMIN").get();
+
+        usuario.setRoles(Collections.singletonList(roles));
+
+        usuarioRepository.save(usuario);
+
+        return new ResponseEntity<String>("Registro existoso.", HttpStatus.OK);
+    }
+
+    //Método para loguear como un USER y obtener un token
+    @PostMapping("/auth/login")
+    public ResponseEntity<DtoAuthRespuesta> login(@RequestBody Login dtoLogin){
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                dtoLogin.getUsername(),
+                dtoLogin.getPassword()
+        ));
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        String token = tokenProvider.generarToken(authentication);
+
+        return new ResponseEntity<DtoAuthRespuesta>(new DtoAuthRespuesta(token), HttpStatus.OK);
+
+    }
 }
