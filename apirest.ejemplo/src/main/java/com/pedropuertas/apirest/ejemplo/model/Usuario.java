@@ -32,7 +32,8 @@ public class Usuario implements Serializable {
     @Column(length = 60)
     private String password;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    //Cargado en EAGER en vez de LAZY para que se puedan cargar los roles al hacer una petición POST
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "usuarios_roles", joinColumns = @JoinColumn(name = "usuario_id", referencedColumnName = "id_usuario")
     , inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id_role"))
     private List<Role> roles;

@@ -1,0 +1,21 @@
+<div class="card border-primary border-3 text-start">
+    <div class="card-header">
+        {{titulo}}
+    </div>
+
+    <div class="card-body">
+        <form method="post" class="text-start">
+            <div class="mb-3 col-sm-6">
+                <label for="username" class="form-label">Username</label>
+                <input [(ngModel)]="usuario.username" type="text" class="form-control" id="username" name="username" autofocus required>
+            </div>
+            <div class="mb-3 col-sm-6">
+                <label for="password" class="form-label">Password</label>
+                <input [(ngModel)]="usuario.password" type="password" class="form-control" id="password" name="password" required>
+            </div>
+            <div class="col-sm-6">
+                <input (click)="login()" type="submit" class="btn btn-l btn-primary btn-block" value="Login">
+            </div>
+        </form>
+    </div>
+</div>
