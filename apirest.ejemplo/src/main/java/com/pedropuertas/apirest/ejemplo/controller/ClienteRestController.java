@@ -302,6 +302,5 @@ public class ClienteRestController {
         String token = tokenProvider.generarToken(authentication);
 
         return new ResponseEntity<DtoAuthRespuesta>(new DtoAuthRespuesta(token), HttpStatus.OK);
-
     }
 }
