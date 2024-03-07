@@ -300,7 +300,8 @@ public class ClienteRestController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         String token = tokenProvider.generarToken(authentication);
+        String username = dtoLogin.getUsername();
 
-        return new ResponseEntity<DtoAuthRespuesta>(new DtoAuthRespuesta(token), HttpStatus.OK);
+        return new ResponseEntity<DtoAuthRespuesta>(new DtoAuthRespuesta(token, username), HttpStatus.OK);
     }
 }

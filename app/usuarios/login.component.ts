@@ -17,19 +17,36 @@ export class LoginComponent {
     this.usuario = new Usuario();
   }
 
+  ngOnInit(): void {
+    if(this.authService.isAuthenticated()){
+      Swal.fire('Login', `Hola ${this.authService.username}, ya estás autenticado`, 'info');
+      this.router.navigate(['/clientes'])
+    }
+  }
+
   login(): void{
     if(this.usuario.username == null || this.usuario.password == null){
       Swal.fire('Error login', 'El usuario o contraseña están vacíos', 'error');
       return;
     }
 
-    this.authService.login(this.usuario).subscribe(response => {
-      this.authService.guardarToken(response.access_token);
+    this.authService.login(this.usuario).subscribe({
+      next: (response) => {
+        this.authService.guardarToken(response.accessToken);
+        this.authService.guardarUsername(response.username);
 
-      let token = this.authService.token;
+        let username = this.authService.username;
 
-      this.router.navigate(['/clientes']);
-      Swal.fire('Login correcto', '¡Bienvenido!', 'success');
+        this.router.navigate(['/clientes']);
+
+        Swal.fire('Login correcto', `¡Bienvenido, ${username}!`, 'success');
+      },
+      error: (error) => {
+        if(error.status == 400 || error.status == 401){
+          Swal.fire('Error login', 'Usuario o contraseña incorrectos', 'error');
+        }
+      }
+
     })
   }
 }

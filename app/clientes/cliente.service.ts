@@ -94,7 +94,6 @@ export class ClienteService {
   update(cliente: Cliente) : Observable<any> {
     return this.http.put<any>(`${this.urlEndPoint}/${cliente.id}`, cliente, {headers: this.httpHeaders}).pipe(
       catchError(e => {
-
         if(this.isNotAuthorized(e)){
           return throwError(() => e);
         }
