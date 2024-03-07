@@ -62,7 +62,9 @@ export class AuthService {
     return false;
   }
 
-  /* logout():{
-
-  } */
+  logout() {
+    this._token = null;
+    this._username = null;
+    sessionStorage.clear();
+  }
 }
