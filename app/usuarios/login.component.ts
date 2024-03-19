@@ -19,8 +19,8 @@ export class LoginComponent {
 
   ngOnInit(): void {
     if(this.authService.isAuthenticated()){
-      Swal.fire('Login', `Hola ${this.authService.username}, ya estás autenticado`, 'info');
-      this.router.navigate(['/clientes'])
+      //Swal.fire('Login', `Hola ${this.authService.username}, ya estás autenticado`, 'info');
+      this.router.navigate(['/clientes']);
     }
   }
 
@@ -34,6 +34,7 @@ export class LoginComponent {
       next: (response) => {
         this.authService.guardarToken(response.accessToken);
         this.authService.guardarUsername(response.username);
+        this.authService.guardarRole(response.role);
 
         let username = this.authService.username;
 
@@ -46,7 +47,6 @@ export class LoginComponent {
           Swal.fire('Error login', 'Usuario o contraseña incorrectos', 'error');
         }
       }
-
     })
   }
 }

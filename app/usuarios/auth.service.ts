@@ -9,6 +9,7 @@ import { Usuario } from './usuario';
 export class AuthService {
   private _token: string;
   private _username: string;
+  private _role: string;
 
   constructor(private http: HttpClient) { }
 
@@ -29,6 +30,17 @@ export class AuthService {
     }else if(this._username == null && sessionStorage.getItem('username')){
       this._username = sessionStorage.getItem('username');
       return this._username;
+    }else{
+      return null;
+    }
+  }
+
+  public get role(): string{
+    if(this._role != null){
+      return this._role;
+    }else if(this._role == null && sessionStorage.getItem('role')){
+      this._role = sessionStorage.getItem('role');
+      return this._role;
     }else{
       return null;
     }
@@ -55,8 +67,13 @@ export class AuthService {
     sessionStorage.setItem('username', username);
   }
 
+  guardarRole(role: string){
+    this._role = role;
+    sessionStorage.setItem('role', role);
+  }
+
   isAuthenticated(): boolean{
-    if(this.token != null && this.username != null){
+    if(this.token != null && this.username != null && this.role != null){
       return true;
     }
     return false;
@@ -65,6 +82,7 @@ export class AuthService {
   logout() {
     this._token = null;
     this._username = null;
+    this._role = null;
     sessionStorage.clear();
   }
 }

@@ -21,7 +21,6 @@ export class FormComponent {
 
   ngOnInit(){
     this.cargarCliente();
-    
     this.clienteService.getRegiones().subscribe(regiones => this.regiones = regiones);
   }
 
@@ -41,33 +40,33 @@ export class FormComponent {
 
   create(): void {
     console.log(this.cliente);
-    this.clienteService.create(this.cliente).subscribe(
-      cliente => {
+    this.clienteService.create(this.cliente).subscribe({
+      next: (cliente) => {
         Swal.fire('Nuevo cliente', `El cliente <b>${cliente.nombre}</b> ha sido creado con éxito.`, 'success'),
         this.router.navigate(['/clientes'])
       },
-      err => {
+      error: (err) => {
         this.errores = err.error.errors as string[];
         console.error('Código del error desde el back: ' + err.status);
         console.error(err.error.errors);
       }
-    )
+    })
   }
 
   //En este método utilizamos json y accedemos al cliente para indicar la respuesta en el popup
   update(): void{
     console.log(this.cliente);
-    this.clienteService.update(this.cliente).subscribe(
-      json => {
+    this.clienteService.update(this.cliente).subscribe({
+      next: (json) => {
         this.router.navigate(['/clientes']),
         Swal.fire('Cliente actualizado', `${json.mensaje} ${json.cliente.nombre}`, 'success')
       },
-      err => {
+      error: (err) => {
         this.errores = err.error.errors as string[];
         console.error('Código del error desde el back: ' + err.status);
         console.error(err.error.errors);
       }
-    )
+    })
   }
 
   compararRegion(o1: Region, o2: Region): boolean{
