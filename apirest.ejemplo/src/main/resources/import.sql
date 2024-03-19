@@ -18,5 +18,7 @@ INSERT INTO ROLES (nombre) VALUES ('ADMIN');
 INSERT INTO ROLES (nombre) VALUES ('USER');
 
 INSERT INTO USUARIOS (username, password) VALUES ('Pedro', '$2a$10$oUzCQEGHnAzAukTl0VL.2.FD.fcwXWVYOFu5EqlRCYdq0rfdjXoDe');
+INSERT INTO USUARIOS (username, password) VALUES ('Pablo', '$2a$10$.n8VZ4YLEG2YOqjfuzlvtuRPKzuYpBpfGzCImrsTYOy22wzb.khOS');
 
 INSERT INTO USUARIOS_ROLES (usuario_id, role_id) VALUES (1, 1);
+INSERT INTO USUARIOS_ROLES (usuario_id, role_id) VALUES (2, 2);

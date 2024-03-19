@@ -301,7 +301,13 @@ public class ClienteRestController {
 
         String token = tokenProvider.generarToken(authentication);
         String username = dtoLogin.getUsername();
+        List <String> roleList = usuarioRepository.findUsuario(username).get().getRoles()
+                .stream()
+                .map(Role::getNombre)
+                .toList();
 
-        return new ResponseEntity<DtoAuthRespuesta>(new DtoAuthRespuesta(token, username), HttpStatus.OK);
+        String role = roleList.get(0);
+
+        return new ResponseEntity<DtoAuthRespuesta>(new DtoAuthRespuesta(token, username, role), HttpStatus.OK);
     }
 }
